@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
   //CHECK IF USER EXISTS
-
+  console.log("user creation");
   const q = "SELECT * FROM users WHERE email = ? OR username = ?";
 
   db.query(q, [req.body.email, req.body.username], (err, data) => {
@@ -45,7 +45,6 @@ export const login = (req, res) => {
 
     const token = jwt.sign({ id: data[0].id }, "jwtkey");
     const { password, ...other } = data[0];
-    console.log(other);
 
     res
       .cookie("access_token", token, {
@@ -65,13 +64,3 @@ export const logout = (req, res) => {
     .status(200)
     .json("User has been logged out.");
 };
-
-/* {
-	"Response Cookies": {
-		"access": {
-			"httpOnly": true,
-			"path": "/",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzE5MTU0MTkzfQ.EKr8k0rwgN4hGOEXfCBZpgMxp9RFuBkMRYqF1Knc37c"
-		}
-	}
-} */
